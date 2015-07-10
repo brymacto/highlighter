@@ -1,0 +1,180 @@
+/*------------------------------------------------------------
+Generic Document Styles
+------------------------------------------------------------*/
+
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 100%;
+  font-family: "Proxima Nova", "Open Sans", sans-serif;
+  height: 100%;
+}
+
+body {
+  /*background: #dadada;*/
+  color: #555;
+}
+
+h1, h2, h3 {
+  font-family: "Gotham HTF Light", "Open Sans", sans-serif;
+  font-weight: lighter;
+  color: #000;
+  margin-bottom: 5%;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+strong {
+  color: #000;
+  font-weight: bold;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 1440px;
+  width: 90%;
+}
+
+p.success {
+  width: 100%;
+  padding: 1rem 2rem;
+  margin-bottom: 2rem;
+  background: #FFFBCC;
+  color: #BFB437;
+}
+
+
+/*------------------------------------------------------------
+Header Styles
+------------------------------------------------------------*/
+
+header {
+  width: 100%;
+  background: #1f2532;
+  color: #fff;
+  padding: 3rem 0 1.5rem 0;
+}
+
+header h1 {
+  font-size: 2rem;
+  color: #fff;
+}
+
+header h1 a {
+  color: #fff;
+}
+
+
+/*------------------------------------------------------------
+Navigation Styles
+------------------------------------------------------------*/
+
+nav {
+  width: 100%;
+  background: #1f2532;
+  color: #fff;
+}
+
+nav ul{
+  display: inline-block;
+}
+
+nav ul > li {
+  float: left;
+  padding: 1.5rem 3rem 1.5rem 0;
+}
+
+
+nav ul > li > a {
+  color: #5F6677;
+  text-decoration: none;
+}
+
+nav ul > li > a:hover {
+  color: #fff;
+}
+
+
+/*------------------------------------------------------------
+Grid Layout Styles
+------------------------------------------------------------*/
+
+.grid {
+  width: 320px;
+}
+
+.column { margin-bottom: 1.5rem; }
+
+@media (min-width: 40rem) {
+
+.column {
+  float: left;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0;
+}
+
+.column.full {
+  width: 100%;
+}
+
+.column.two-thirds {
+  width: 66.7%;
+}
+
+.column.half {
+  width: 49.5%;
+}
+
+.column.third {
+  width: 33.3%;
+}
+
+.column.fourth {
+  width: 25%;
+}
+
+.column.three-fourths {
+  width: 75%;
+}
+
+.column.flow-opposite {
+  float: right;
+  padding-left: 5%;
+}
+
+}
+
+
+/*------------------------------------------------------------
+Squares
+------------------------------------------------------------*/
+
+.square {
+  background: #e3e3e3;
+  text-align: center;
+  border: solid 1px red;
+  padding: 50px;
+  width: 100px;
+  height: 100px;
+  float: left;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0;
+  /*margin: 5px;*/
+}
+
+#winnerModal {
+  display: none;
+}
