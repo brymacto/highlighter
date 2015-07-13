@@ -42,16 +42,8 @@ strong {
 
 .container {
   margin: 0 auto;
-  max-width: 1440px;
+  max-width: 940px;
   width: 90%;
-}
-
-p.success {
-  width: 100%;
-  padding: 1rem 2rem;
-  margin-bottom: 2rem;
-  background: #FFFBCC;
-  color: #BFB437;
 }
 
 
@@ -118,63 +110,79 @@ Grid Layout Styles
 
 @media (min-width: 40rem) {
 
-.column {
-  float: left;
-  display: inline-block;
-  vertical-align: top;
-  margin: 0;
-}
+  .column {
+    float: left;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+  }
 
-.column.full {
-  width: 100%;
-}
+  .column.full {
+    width: 100%;
+  }
 
-.column.two-thirds {
-  width: 66.7%;
-}
+  .column.two-thirds {
+    width: 66.7%;
+  }
 
-.column.half {
-  width: 49.5%;
-}
+  .column.half {
+    width: 49.5%;
+  }
 
-.column.third {
-  width: 33.3%;
-}
+  .column.third {
+    width: 33.3%;
+  }
 
-.column.fourth {
-  width: 25%;
-}
+  .column.fourth {
+    width: 25%;
+  }
 
-.column.three-fourths {
-  width: 75%;
-}
+  .column.three-fourths {
+    width: 75%;
+  }
 
-.column.flow-opposite {
-  float: right;
-  padding-left: 5%;
-}
+  .column.flow-opposite {
+    float: right;
+    padding-left: 5%;
+  }
 
 }
 
 
 /*------------------------------------------------------------
-Squares
+Custom Styles
 ------------------------------------------------------------*/
 
-.square {
-  background: #e3e3e3;
-  text-align: center;
-  border: solid 1px red;
-  padding: 50px;
-  width: 100px;
-  height: 100px;
-  float: left;
-  display: inline-block;
-  vertical-align: top;
-  margin: 0;
-  /*margin: 5px;*/
+article {
+  position: relative;
 }
 
-#winnerModal {
+p {
+  margin: 2em 0; line-height: 1.2em;
+}
+
+.highlight {
+  background: yellow;
+}
+
+#highlightCreatePopover, #highlightDeletePopover {
+  background: black;
+  color: white;
+  padding: 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: none;
+}
+
+#highlightCreatePopover a, #highlightDeletePopover a {
+  color: white;
+}
+
+.active {
+  display: block;
+}
+
+.inactive {
   display: none;
 }
