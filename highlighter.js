@@ -41,30 +41,9 @@ function toggleAllHighlights() {
   }
 }
 
-function buildAllHighlights() {
-  for (var i = 0; i < highlights.length; i++) {
-    // console.log(highlights[i].sel.anchorNode);
-    // console.log(highlights[i].sel.anchorOffset);
-    // console.log(highlights[i].sel.focusNode);
-    // console.log(highlights[i].sel.focusOffset);
-
-    var p = $("p:contains('" + highlights[i].selection.toString() + "')");
-
-
-    var newNode = newHighlightSpan(i);
-    newNode.text(highlights[i].text);
-    highlights[i].element.insertNode(newNode);
-
-    console.log(highlights[i].range.startContainer.tagName);
-    console.log(highlights[i].range.startOffset);
-
-    console.log(highlights[i].range.endContainer.tagName);
-    console.log(highlights[i].range.endOffset);
-
-    // highlights[i].range.surroundContents(highlights[i].element);
-      // TODO - only putting span at beginning of range, not around the range
-    }
-  }
+// TODO: add functionality to build highlights stored in array from scratch
+// function buildAllHighlights() {
+//   }
 
 function deleteAllHighlights() {
   $('.highlight').contents().unwrap();
@@ -138,10 +117,11 @@ $(document).ready(function() {
     e.preventDefault();
   });
 
-  $('#buildHighlights').on('click', function(e) {
-    buildAllHighlights();
-    e.preventDefault();
-  });
+  // TODO: add functionality to build highlights stored in array from scratch
+  // $('#buildHighlights').on('click', function(e) {
+  //   buildAllHighlights();
+  //   e.preventDefault();
+  // });
 
   $('#deleteHighlights').on('click', function(e) {
     deleteAllHighlights();
