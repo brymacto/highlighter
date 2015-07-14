@@ -41,9 +41,11 @@ function toggleAllHighlights() {
   }
 }
 
-// TODO: add functionality to build highlights stored in array from scratch
 // function buildAllHighlights() {
+//   for (var i = 0; i < highlights.length; i++) {
+
 //   }
+// }
 
 function deleteAllHighlights() {
   $('.highlight').contents().unwrap();
@@ -58,8 +60,8 @@ function hideHighlighterMenus() {
 }
 
 function positionMenu(elem, range){
-  var leftPos = range.getClientRects()[0].left;
-  var topPos = range.getClientRects()[0].top - 50;
+  var leftPos = ($('article').width() / 2);
+  var topPos =  range.getBoundingClientRect()["top"] + window.scrollY - 50;
   elem.css('left', leftPos);
   elem.css('top', topPos);
 }
@@ -70,7 +72,7 @@ $(document).ready(function() {
 
   // Adding Highlights
 
-  $('article').on('mouseup', function() {
+  $('article').on('mouseup', function(e) {
     if (sel.getRangeAt(0).toString().length > 0) {
       positionMenu($('#highlightCreatePopover'), sel.getRangeAt(0));
       $('#highlightCreatePopover').show();
@@ -117,7 +119,6 @@ $(document).ready(function() {
     e.preventDefault();
   });
 
-  // TODO: add functionality to build highlights stored in array from scratch
   // $('#buildHighlights').on('click', function(e) {
   //   buildAllHighlights();
   //   e.preventDefault();
