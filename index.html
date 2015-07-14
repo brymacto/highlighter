@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -12,6 +12,7 @@
 <body>
   <header>
     <div class="container">
+    <h1>Highlighter</h1>
       <nav>
         <ul>
           <li>
@@ -27,7 +28,7 @@
       </nav>
     </div>
   </header>
-  <div id="article" class="container">
+  <article class="container">
     <p>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -65,12 +66,15 @@
       cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
       proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </p>
-  </div>
+  </article>
   <div id="highlightCreatePopover">
-    <a id="addHighlight" href="#">Highlight</a>
+  <a id="addHighlight" href="#" class="highlight_button">Highlight</a>
+    <div class="highlight_arrow"></div>
   </div>
   <div id="highlightDeletePopover">
     <a id="deleteHighlight" href="#">Remove Highlight</a>
+    <div class="highlight_arrow"></div>
   </div>
+  div#output
 </body>
 </html>
