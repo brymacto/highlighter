@@ -175,7 +175,7 @@ p {
   position: absolute;
   left: 0;
   top: 0;
-  display: none;
+  /*visibility: hidden;*/
   font-size: .8em;
 }
 
@@ -184,11 +184,11 @@ p {
 }
 
 .active {
-  display: block;
+  visibility: visible;
 }
 
 .inactive {
-  display: none;
+  visibility: hidden;
 }
 
 .highlight_arrow {

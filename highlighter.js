@@ -41,20 +41,12 @@ function toggleAllHighlights() {
   }
 }
 
-// function buildAllHighlights() {
-//   for (var i = 0; i < highlights.length; i++) {
-
-//   }
-// }
-
-function deleteAllHighlights() {
-  $('.highlight').contents().unwrap();
-}
-
 // Highlighter Menu Functions
 
 function hideHighlighterMenus() {
+  $('#highlightCreatePopover').removeClass('slideUp');
   $('#highlightCreatePopover').hide();
+  $('#highlightDeletePopover').removeClass('slideUp');
   $('#highlightDeletePopover').hide();
   $('#deleteHighlight').off('click');
 }
@@ -68,27 +60,27 @@ function positionMenu(elem, range){
 
 $(document).ready(function() {
 
-  var sel = window.getSelection();
+  if (window.getSelection) {
+    var sel = window.getSelection();
+  }
 
   // Adding Highlights
 
   $('article').on('mouseup', function(e) {
-    if (sel.getRangeAt(0).toString().length > 0) {
-      positionMenu($('#highlightCreatePopover'), sel.getRangeAt(0));
-      $('#highlightCreatePopover').show();
+    e.preventDefault();
+    var range = sel.getRangeAt(0);
+    if (sel.rangeCount && (range.toString().length > 0) && (range.commonAncestorContainer.nodeType === 3)) {
+      positionMenu($('#highlightCreatePopover'), range);
+      $('#highlightCreatePopover').show().addClass('slideUp');
     } else {
       hideHighlighterMenus();
     }
   });
 
-  $('#addHighlight').on('click', function() {
-    try {
-      createHighlight(sel);
-    } catch (ex) {
-
-    }
-    console.log(highlights.length);
-    $('#highlightCreatePopover').hide();
+  $('#addHighlight').on('click', function(e) {
+    e.preventDefault();
+    createHighlight(sel);
+    hideHighlighterMenus();
   });
 
   // Deleting Highlights
@@ -100,34 +92,25 @@ $(document).ready(function() {
     // get the highlight id
     var _id = this.id.substr(10);
     positionMenu($('#highlightDeletePopover'), highlights[_id].range);
-    $('#highlightDeletePopover').show();
+    $('#highlightDeletePopover').show().addClass('slideUp');
 
     // add event handler to delete button
-    $('#deleteHighlight').on('click', function() {
+    $('#deleteHighlight').on('click', function(event) {
+      event.preventDefault();
       deleteHighlight(_id);
       cleanUpHighlights();
       console.log(highlights.length);
-      $('#highlightDeletePopover').hide();
-      $(this).off('click');
+      hideHighlighterMenus();
     });
   });
 
   // Main Controls
 
   $('#toggleHighlights').on('click', function(e) {
+    e.preventDefault();
     toggleAllHighlights();
-    e.preventDefault();
   });
 
-  // $('#buildHighlights').on('click', function(e) {
-  //   buildAllHighlights();
-  //   e.preventDefault();
-  // });
-
-  $('#deleteHighlights').on('click', function(e) {
-    deleteAllHighlights();
-    e.preventDefault();
-  });
 
   $('header').on('click', hideHighlighterMenus);
   $('footer').on('click', hideHighlighterMenus);
