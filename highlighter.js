@@ -67,9 +67,10 @@ $(document).ready(function() {
   // Adding Highlights
 
   $('article').on('mouseup', function(e) {
+    e.stopPropagation();
     e.preventDefault();
     var range = sel.getRangeAt(0);
-    if (sel.rangeCount && (range.toString().length > 0) && (range.commonAncestorContainer.nodeType === 3)) {
+    if (sel.rangeCount && (range.toString().length > 0)) {
       positionMenu($('#highlightCreatePopover'), range);
       $('#highlightCreatePopover').show().addClass('slideUp');
     } else {
@@ -97,6 +98,7 @@ $(document).ready(function() {
     // add event handler to delete button
     $('#deleteHighlight').on('click', function(event) {
       event.preventDefault();
+      event.stopPropagation();
       deleteHighlight(_id);
       cleanUpHighlights();
       console.log(highlights.length);
@@ -112,8 +114,8 @@ $(document).ready(function() {
   });
 
 
-  $('header').on('click', hideHighlighterMenus);
-  $('footer').on('click', hideHighlighterMenus);
+  // $('header').on('click', hideHighlighterMenus);
+  // $('body').on('mouseup', hideHighlighterMenus);
   $('article').on('mousedown', hideHighlighterMenus);
 
 });
