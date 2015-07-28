@@ -64,8 +64,8 @@ $(document).on('ready page:load', function() {
   }
 
   function buildHighlights() {
-    // Get an instance of the entire article's HTML
-    var finalMarkedText = $('article').html();
+    // Make sure article is pristine
+    deleteHighlights();
     // Loop through the array of highlights backwards
     for (var i=(highlights.length-1); i>=0; i--) {
       // Get the full text of the current highlight
@@ -73,12 +73,17 @@ $(document).on('ready page:load', function() {
       currentHighlightText = currentHighlightText.replace(/\s{2,}/g, ' ');
       currentHighlightText = currentHighlightText.replace(/\t/g, ' ');
       currentHighlightText = currentHighlightText.toString().trim().replace(/(\r\n|\n|\r)/g,"");
-      // Insert a highlight span in the article's HTML where the article's text appears
-      var marked = finalMarkedText.replace(currentHighlightText, "<span id='highlight-" + i + "' class='highlight'>" + currentHighlightText + "</span>");
-      finalMarkedText = marked;
+
+      var finalMarkedText = "";
+
+      $('article').contents().filter(function() {
+        if (this.id === highlights[i].parentElementID) {
+          finalMarkedText = $(this).html().replace(currentHighlightText, "<span id='highlight-" + i + "' class='highlight'>" + currentHighlightText + "</span>");
+          $(this).html(finalMarkedText);
+        }
+      });
+
     }
-    // Update article HTML so that it contains mark-up of highlight
-    $('article').html(finalMarkedText);
   }
 
   // ----------------------------------------------------------------
