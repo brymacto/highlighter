@@ -23,7 +23,7 @@ $(document).on('ready page:load', function() {
   // Highlight Logic
   // ----------------------------------------------------------------
 
-  function Highlight(startContainer, startOffset, endContainer, endOffset, commonAncestorContainer, highlightText, parentElementID) {
+  function Highlight(startContainer, startOffset, endContainer, endOffset, commonAncestorContainer, highlightText, parentElementID, occurences) {
     this.id = highlights.length;
     this.startContainer = startContainer;
     this.startOffset = startOffset;
@@ -31,6 +31,7 @@ $(document).on('ready page:load', function() {
     this.endOffset = endOffset;
     this.text = highlightText;
     this.parentElementID = parentElementID;
+    this.occurences = occurences;
   }
 
   function createHighlight() {
@@ -39,13 +40,39 @@ $(document).on('ready page:load', function() {
       var range = sel.getRangeAt(0);
       if (sel.rangeCount && (range.toString().length > 0)) {
         // Create a new highlight
-        var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, range.toString(), range.startContainer.parentElement.id);
+        var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, range.toString(), range.startContainer.parentElement.id, getOccurences(range.startContainer.parentElement.innerHTML, range.toString()));
         // Store highlight in array
         highlights.push(newHighlight);
         // Add a span to the range
         range.surroundContents(newHighlightSpan(newHighlight.id));
       }
     }
+  }
+
+  function getOccurences(elementText, match) {
+console.log("About to get occurences.  ElementText, match:");
+console.log(elementText);
+console.log(match);
+console.log("Result:");
+
+var occurences = [];
+var matchIndex = 0;
+var allOccurencesAdded = false;
+// Check for presence until indexOf = -1
+
+while (allOccurencesAdded == false) {
+  newOccurence = elementText.indexOf(match, matchIndex);
+  if (newOccurence >= 0) {
+    occurences.push(newOccurence);
+    matchIndex = newOccurence + 1;
+  } else {
+    allOccurencesAdded = true;
+  }
+
+}
+console.log("Occurences:");
+console.log(occurences);
+
   }
 
   function newHighlightSpan(id) {
