@@ -51,10 +51,10 @@ $(document).on('ready page:load', function() {
         console.log("parent element:")
         console.log(range.startContainer.parentElement);
         console.log("Inner html (element in getOccurences function):");
-        console.log(range.startContainer.parentElement.innerHTML);
+        console.log(range.startContainer.textContent);
         console.log("range.toString (match in getOccurences function)")
         console.log(range.toString())
-        var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, range.toString(), range.startContainer.parentElement.id, getOccurences(range.startContainer.parentElement.innerHTML, range.toString()), sel.focusOffset);
+        var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, range.toString(), range.startContainer.parentElement.id, getOccurences(range.startContainer.textContent, range.toString()), sel.focusOffset);
         // Store highlight in array
         highlights.push(newHighlight);
         // Add a span to the range
@@ -120,10 +120,12 @@ function newHighlightSpan(id) {
 // ORIG:
           // finalMarkedText = $(this).html().replace(currentHighlightText, "<span id='highlight-" + i + "' class='highlight'>" + currentHighlightText + "</span>");
           // $(this).html(finalMarkedText);
-          searchOccurences = getIndicesOf(currentHighlightText, $(this).html());
+          searchOccurences = getIndicesOf(currentHighlightText, (highlights[i].startContainer.textContent + highlights[i].text));  // This is checking the paragraph for occurences, but the searh index is based on the node.
 
 
-          occurenceIndex = searchOccurences[highlights[i].occurenceIndex];
+          occurenceIndex = searchOccurences[highlights[i].occurenceIndex]; 
+          console.log("Building occurences from:")
+          console.log(highlights[i].startContainer.textContent + highlights[i].text);
           console.log("Search occurences:");
           console.log(searchOccurences);
           console.log("highlights[i]:")
@@ -132,7 +134,27 @@ function newHighlightSpan(id) {
           console.log(highlights[i].occurenceIndex);
           console.log("occurenceIndex:");
           console.log(occurenceIndex);
-          finalMarkedText = $(this).html().substring(0, occurenceIndex) + "<span class='highlight'>" + highlights[i].text + "</span>" + $(this).html().substring(occurenceIndex + highlights[i].text.length, $(this).html().length);
+          // For the below, now need to update teh string interpolotation.  It builds the string using the occurenceIndex, but that index is now based on the node, and it's building based on the HTML.
+          // One possibility, iterate through the child nodes, build each one until get to current node.
+          var finalMarkedText = ""
+          var childLength =  highlights[i].startContainer.parentNode.childNodes.length;
+          
+
+          for (x = 0; x < childLength; x++) {
+            // To add: check if current node and if so use substr to add the span.
+            console.log("About to concat finalMarkedText, with:");
+            console.log(highlights[i].startContainer.parentNode.childNodes[x].outerHTML || highlights[i].startContainer.parentNode.childNodes[x].textContent);
+            finalMarkedText = finalMarkedText.concat(highlights[i].startContainer.parentNode.childNodes[x].outerHTML || highlights[i].startContainer.parentNode.childNodes[x].textContent);
+            console.log("Updated finalMarkedText is:");
+            console.log(finalMarkedText)
+
+          }
+
+          
+          console.log("Final marked text:");
+          console.log(finalMarkedText);
+
+          // finalMarkedTextOLD = $(this).html().substring(0, occurenceIndex) + "<span class='highlight'>" + highlights[i].text + "</span>" + $(this).html().substring(occurenceIndex + highlights[i].text.length, $(this).html().length);
           $(this).html(finalMarkedText);
 
         }
