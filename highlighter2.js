@@ -47,6 +47,7 @@ $(document).on('ready page:load', function() {
       if (sel.rangeCount && (range.toString().length > 0)) {
         // Create a new highlight
         var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, range.toString(), range.startContainer.parentElement.id, getOccurences(range.startContainer.textContent, range.toString()), sel.focusOffset);
+        console.log(newHighlight)
         // Store highlight in array
         highlights.push(newHighlight);
         // Add a span to the range
@@ -113,14 +114,18 @@ function newHighlightSpan(id) {
           occurenceIndex = searchOccurences[highlights[i].occurenceIndex]; 
           var finalMarkedText = ""
           var childLength =  highlights[i].startContainer.parentNode.childNodes.length;
-          
-
+          console.log("******************************************")
+          console.log("About to loop for following highlight:");
+          console.log(highlights[i].text);
           for (x = 0; x < childLength; x++) {
+            console.log("About to concat the following node");
+            console.log(highlights[i].startContainer.parentNode.childNodes[x].outerHTML || highlights[i].startContainer.parentNode.childNodes[x].textContent)
             finalMarkedText = finalMarkedText.concat(highlights[i].startContainer.parentNode.childNodes[x].outerHTML || highlights[i].startContainer.parentNode.childNodes[x].textContent);
             // If this doesn't work once we connect it to the database, we may need to do the following:
             // Check if node is the current node in question, and if so modify the HTML string by using substr and the occurence index.
           }
-
+          console.log("FInished product for final marked text:")
+          console.log(finalMarkedText);
           
 
           $(this).html(finalMarkedText);
