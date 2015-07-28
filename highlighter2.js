@@ -120,8 +120,11 @@ function newHighlightSpan(id) {
           console.log(highlights[i]);
           for (x = 0; x < childLength; x++) {
             console.log("About to concat the following node, node #" + x);
-            console.log(highlights[i].startContainer.parentNode.childNodes[x].outerHTML || highlights[i].startContainer.parentNode.childNodes[x].textContent)
-            finalMarkedText = finalMarkedText.concat(highlights[i].startContainer.parentNode.childNodes[x].outerHTML || highlights[i].startContainer.parentNode.childNodes[x].textContent);
+            currentNode = highlights[i].startContainer.parentNode.childNodes[x]
+            console.log(currentNode.outerHTML || currentNode.textContent)
+            // if 
+
+            finalMarkedText = finalMarkedText.concat(currentNode.outerHTML || currentNode.textContent);
             // If this doesn't work once we connect it to the database, we may need to do the following:
             // Check if node is the current node in question, and if so modify the HTML string by using substr and the occurence index.
           }
