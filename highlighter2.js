@@ -50,32 +50,26 @@ $(document).on('ready page:load', function() {
   }
 
   function getOccurences(elementText, match) {
-console.log("About to get occurences.  ElementText, match:");
-console.log(elementText);
-console.log(match);
-console.log("Result:");
+    var occurences = [];
+    var matchIndex = 0;
+    var allOccurencesAdded = false;
+    
+    while (allOccurencesAdded == false) {
+      newOccurence = elementText.indexOf(match, matchIndex);
+      if (newOccurence >= 0) {
+        occurences.push(newOccurence);
+        matchIndex = newOccurence + 1;
+      } else {
+        allOccurencesAdded = true;
+      }
 
-var occurences = [];
-var matchIndex = 0;
-var allOccurencesAdded = false;
-// Check for presence until indexOf = -1
+    }
 
-while (allOccurencesAdded == false) {
-  newOccurence = elementText.indexOf(match, matchIndex);
-  if (newOccurence >= 0) {
-    occurences.push(newOccurence);
-    matchIndex = newOccurence + 1;
-  } else {
-    allOccurencesAdded = true;
-  }
+return occurences;
 
 }
-console.log("Occurences:");
-console.log(occurences);
 
-  }
-
-  function newHighlightSpan(id) {
+function newHighlightSpan(id) {
     // Create a new span with highlight-id and class highlight
     var newNode = document.createElement("span");
     newNode.setAttribute('id', ('highlight-'+id));
