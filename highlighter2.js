@@ -23,7 +23,7 @@ $(document).on('ready page:load', function() {
   // Highlight Logic
   // ----------------------------------------------------------------
 
-  function Highlight(startContainer, startOffset, endContainer, endOffset, commonAncestorContainer, highlightText, parentElementID, occurences) {
+  function Highlight(startContainer, startOffset, endContainer, endOffset, commonAncestorContainer, highlightText, parentElementID, occurences, focusOffset) {
     this.id = highlights.length;
     this.startContainer = startContainer;
     this.startOffset = startOffset;
@@ -34,6 +34,7 @@ $(document).on('ready page:load', function() {
     this.parentElementID = parentElementID;
     this.occurences = occurences;
     this.occurenceIndex = this.occurences.indexOf(this.startOffset);
+    this.focusOffset = focusOffset;
     console.log(this)
   }
 
@@ -53,7 +54,7 @@ $(document).on('ready page:load', function() {
         console.log(range.startContainer.parentElement.innerHTML);
         console.log("range.toString (match in getOccurences function)")
         console.log(range.toString())
-        var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, range.toString(), range.startContainer.parentElement.id, getOccurences(range.startContainer.parentElement.innerHTML, range.toString()));
+        var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, range.toString(), range.startContainer.parentElement.id, getOccurences(range.startContainer.parentElement.innerHTML, range.toString()), sel.focusOffset);
         // Store highlight in array
         highlights.push(newHighlight);
         // Add a span to the range
