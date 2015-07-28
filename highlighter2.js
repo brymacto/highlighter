@@ -95,7 +95,9 @@ function newHighlightSpan(id) {
     // Make sure article is pristine
     deleteHighlights();
     // Loop through the array of highlights backwards
-    for (var i=(highlights.length-1); i>=0; i--) {
+    for (var i=(highlights.length-1); i>=(highlights.length-1); i--) {
+      //Using this for statement instead of the below solves the immediate problem of multiple highlights not loading if highlights ar erebuilt after the first highlight was made.  However, it may not work with the database.
+    // for (var i=(highlights.length-1); i>=0; i--) {
       // Get the full text of the current highlight
       var currentHighlightText = highlights[i].text;
       currentHighlightText = currentHighlightText.replace(/\s{2,}/g, ' ');
@@ -122,7 +124,6 @@ function newHighlightSpan(id) {
             console.log("About to concat the following node, node #" + x);
             currentNode = highlights[i].startContainer.parentNode.childNodes[x]
             console.log(currentNode.outerHTML || currentNode.textContent)
-            // if 
 
             finalMarkedText = finalMarkedText.concat(currentNode.outerHTML || currentNode.textContent);
             // If this doesn't work once we connect it to the database, we may need to do the following:
