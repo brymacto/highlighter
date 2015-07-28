@@ -6,8 +6,8 @@
   <link rel="stylesheet" href="reset.css">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="animations.css">
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script type="text/javascript" src="highlighter1.js"></script>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="highlighter2.js"></script>
 </head>
 <body>
   <header>
@@ -18,16 +18,24 @@
           <li>
             <a id="toggleHighlights" href="#">Toggle highlights</a>
           </li>
-<!--           <li>
-            <a id="buildHighlights" href="#">Build highlights</a>
-          </li> -->
-<!--           <li>
+          <li>
             <a id="deleteHighlights" href="#">Delete highlights</a>
-          </li> -->
+          </li>
+          <li>
+            <a id="buildHighlights" href="#">Build highlights</a>
+          </li>
         </ul>
       </nav>
     </div>
   </header>
+  <div id="highlightCreatePopover">
+    <a id="addHighlight" href="#" class="highlight_button">Highlight</a>
+    <!-- <div class="highlight_arrow"></div> -->
+  </div>
+  <div id="highlightDeletePopover">
+    <a id="deleteHighlight" href="#" class="highlight_button">Remove Highlight</a>
+    <!-- <div class="highlight_arrow"></div> -->
+  </div>
   <article class="container">
     <p>
       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -62,13 +70,5 @@
       proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
     </p>
   </article>
-  <div id="highlightCreatePopover" class="inactive">
-  <a id="addHighlight" href="#" class="highlight_button">Highlight</a>
-    <div class="highlight_arrow"></div>
-  </div>
-  <div id="highlightDeletePopover" class="inactive">
-    <a id="deleteHighlight" href="#" class="highlight_button">Remove Highlight</a>
-    <div class="highlight_arrow"></div>
-  </div>
 </body>
 </html>

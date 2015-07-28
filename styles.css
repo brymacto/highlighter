@@ -172,11 +172,13 @@ p {
   background: black;
   color: white;
   padding: 10px;
-  position: absolute;
+/*  position: absolute;
   left: 0;
-  top: 0;
+  top: 0;*/
   /*visibility: hidden;*/
   font-size: .8em;
+  width: 45%;
+  display: inline-block;
 }
 
 #highlightCreatePopover a, #highlightDeletePopover a {
