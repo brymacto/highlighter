@@ -115,10 +115,10 @@ function newHighlightSpan(id) {
           var finalMarkedText = ""
           var childLength =  highlights[i].startContainer.parentNode.childNodes.length;
           console.log("******************************************")
-          console.log("About to loop for following highlight:");
+          console.log("About to loop for following highlight for highlight # " + i + ":");
           console.log(highlights[i].text);
           for (x = 0; x < childLength; x++) {
-            console.log("About to concat the following node");
+            console.log("About to concat the following node, node #" + x);
             console.log(highlights[i].startContainer.parentNode.childNodes[x].outerHTML || highlights[i].startContainer.parentNode.childNodes[x].textContent)
             finalMarkedText = finalMarkedText.concat(highlights[i].startContainer.parentNode.childNodes[x].outerHTML || highlights[i].startContainer.parentNode.childNodes[x].textContent);
             // If this doesn't work once we connect it to the database, we may need to do the following:
