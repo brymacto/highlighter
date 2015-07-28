@@ -117,6 +117,7 @@ function newHighlightSpan(id) {
           console.log("******************************************")
           console.log("About to loop for following highlight for highlight # " + i + ":");
           console.log(highlights[i].text);
+          console.log(highlights[i]);
           for (x = 0; x < childLength; x++) {
             console.log("About to concat the following node, node #" + x);
             console.log(highlights[i].startContainer.parentNode.childNodes[x].outerHTML || highlights[i].startContainer.parentNode.childNodes[x].textContent)
