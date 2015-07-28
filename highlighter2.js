@@ -1,6 +1,9 @@
 // Array to store the highlights
 var highlights = [];
 
+// TODO: fix rebuild highlights edge case for the following scenario
+// Build a highlight, delete and rebuild, build another highlight, delete and rebuild.  At this point the second highlight doesn't appear.
+
 $(document).on('ready page:load', function() {
 
   // ----------------------------------------------------------------
@@ -27,7 +30,6 @@ $(document).on('ready page:load', function() {
     this.id = highlights.length;
     this.startContainer = startContainer;
     this.startOffset = startOffset;
-    // This causes issues when you are doing a second highlight in a paragraph.  Occurences are based on html which now includes html for a previous span, but it's compared with startOffset which is for the text only, specifically for the new text node.
     this.endContainer = endContainer;
     this.endOffset = endOffset;
     this.text = highlightText;
@@ -35,25 +37,15 @@ $(document).on('ready page:load', function() {
     this.occurences = occurences;
     this.occurenceIndex = this.occurences.indexOf(this.startOffset);
     this.focusOffset = focusOffset;
-    console.log(this)
   }
 
   function createHighlight() {
     if (window.getSelection) {
       var sel = window.getSelection();
       var range = sel.getRangeAt(0);
-      console.log("range created for highlight:");
-      console.log(range);
+      
       if (sel.rangeCount && (range.toString().length > 0)) {
         // Create a new highlight
-        console.log("startcontainer:");
-        console.log(range.startContainer);
-        console.log("parent element:")
-        console.log(range.startContainer.parentElement);
-        console.log("Inner html (element in getOccurences function):");
-        console.log(range.startContainer.textContent);
-        console.log("range.toString (match in getOccurences function)")
-        console.log(range.toString())
         var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, range.toString(), range.startContainer.parentElement.id, getOccurences(range.startContainer.textContent, range.toString()), sel.focusOffset);
         // Store highlight in array
         highlights.push(newHighlight);
@@ -114,47 +106,23 @@ function newHighlightSpan(id) {
 
       $('article').contents().filter(function() {
         if (this.id === highlights[i].parentElementID) {
-// TODO: Modify this so it uses the startOffset highlighter value and starts the search there. 
-// OR: update the 
 
-// ORIG:
-          // finalMarkedText = $(this).html().replace(currentHighlightText, "<span id='highlight-" + i + "' class='highlight'>" + currentHighlightText + "</span>");
-          // $(this).html(finalMarkedText);
           searchOccurences = getIndicesOf(currentHighlightText, (highlights[i].startContainer.textContent + highlights[i].text));  // This is checking the paragraph for occurences, but the searh index is based on the node.
 
 
           occurenceIndex = searchOccurences[highlights[i].occurenceIndex]; 
-          console.log("Building occurences from:")
-          console.log(highlights[i].startContainer.textContent + highlights[i].text);
-          console.log("Search occurences:");
-          console.log(searchOccurences);
-          console.log("highlights[i]:")
-          console.log(highlights[i]);
-          console.log("highlights[i].occurenceIndex");
-          console.log(highlights[i].occurenceIndex);
-          console.log("occurenceIndex:");
-          console.log(occurenceIndex);
-          // For the below, now need to update teh string interpolotation.  It builds the string using the occurenceIndex, but that index is now based on the node, and it's building based on the HTML.
-          // One possibility, iterate through the child nodes, build each one until get to current node.
           var finalMarkedText = ""
           var childLength =  highlights[i].startContainer.parentNode.childNodes.length;
           
 
           for (x = 0; x < childLength; x++) {
-            // To add: check if current node and if so use substr to add the span.
-            console.log("About to concat finalMarkedText, with:");
-            console.log(highlights[i].startContainer.parentNode.childNodes[x].outerHTML || highlights[i].startContainer.parentNode.childNodes[x].textContent);
             finalMarkedText = finalMarkedText.concat(highlights[i].startContainer.parentNode.childNodes[x].outerHTML || highlights[i].startContainer.parentNode.childNodes[x].textContent);
-            console.log("Updated finalMarkedText is:");
-            console.log(finalMarkedText)
-
+            // If this doesn't work once we connect it to the database, we may need to do the following:
+            // Check if node is the current node in question, and if so modify the HTML string by using substr and the occurence index.
           }
 
           
-          console.log("Final marked text:");
-          console.log(finalMarkedText);
 
-          // finalMarkedTextOLD = $(this).html().substring(0, occurenceIndex) + "<span class='highlight'>" + highlights[i].text + "</span>" + $(this).html().substring(occurenceIndex + highlights[i].text.length, $(this).html().length);
           $(this).html(finalMarkedText);
 
         }
