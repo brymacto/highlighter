@@ -27,22 +27,33 @@ $(document).on('ready page:load', function() {
     this.id = highlights.length;
     this.startContainer = startContainer;
     this.startOffset = startOffset;
+    // This causes issues when you are doing a second highlight in a paragraph.  Occurences are based on html which now includes html for a previous span, but it's compared with startOffset which is for the text only, specifically for the new text node.
     this.endContainer = endContainer;
     this.endOffset = endOffset;
     this.text = highlightText;
     this.parentElementID = parentElementID;
     this.occurences = occurences;
-    this.occurenceIndex = occurences.indexOf(startOffset);
+    this.occurenceIndex = this.occurences.indexOf(this.startOffset);
+    console.log(this)
   }
 
   function createHighlight() {
     if (window.getSelection) {
       var sel = window.getSelection();
       var range = sel.getRangeAt(0);
+      console.log("range created for highlight:");
+      console.log(range);
       if (sel.rangeCount && (range.toString().length > 0)) {
         // Create a new highlight
+        console.log("startcontainer:");
+        console.log(range.startContainer);
+        console.log("parent element:")
+        console.log(range.startContainer.parentElement);
+        console.log("Inner html (element in getOccurences function):");
+        console.log(range.startContainer.parentElement.innerHTML);
+        console.log("range.toString (match in getOccurences function)")
+        console.log(range.toString())
         var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, range.toString(), range.startContainer.parentElement.id, getOccurences(range.startContainer.parentElement.innerHTML, range.toString()));
-        console.log(newHighlight);
         // Store highlight in array
         highlights.push(newHighlight);
         // Add a span to the range
@@ -99,6 +110,7 @@ function newHighlightSpan(id) {
 
       var finalMarkedText = "";
 
+
       $('article').contents().filter(function() {
         if (this.id === highlights[i].parentElementID) {
 // TODO: Modify this so it uses the startOffset highlighter value and starts the search there. 
@@ -107,9 +119,19 @@ function newHighlightSpan(id) {
 // ORIG:
           // finalMarkedText = $(this).html().replace(currentHighlightText, "<span id='highlight-" + i + "' class='highlight'>" + currentHighlightText + "</span>");
           // $(this).html(finalMarkedText);
+          searchOccurences = getIndicesOf(currentHighlightText, $(this).html());
 
 
-          finalMarkedText = $(this).html().substring(0, highlights[i].startOffset - 7) + "<span class='highlight'>" + highlights[i].text + "</span>" + $(this).html().substring(highlights[i].startOffset - 7 + highlights[i].text.length, $(this).html().length);
+          occurenceIndex = searchOccurences[highlights[i].occurenceIndex];
+          console.log("Search occurences:");
+          console.log(searchOccurences);
+          console.log("highlights[i]:")
+          console.log(highlights[i]);
+          console.log("highlights[i].occurenceIndex");
+          console.log(highlights[i].occurenceIndex);
+          console.log("occurenceIndex:");
+          console.log(occurenceIndex);
+          finalMarkedText = $(this).html().substring(0, occurenceIndex) + "<span class='highlight'>" + highlights[i].text + "</span>" + $(this).html().substring(occurenceIndex + highlights[i].text.length, $(this).html().length);
           $(this).html(finalMarkedText);
 
         }
@@ -117,6 +139,18 @@ function newHighlightSpan(id) {
 
     }
   }
+
+function getIndicesOf(searchStr, str) {
+    var startIndex = 0, searchStrLen = searchStr.length;
+    var index, indices = [];
+
+    while ((index = str.indexOf(searchStr, startIndex)) > -1) {
+        indices.push(index);
+        startIndex = index + searchStrLen;
+    }
+    return indices;
+}
+
 
   // ----------------------------------------------------------------
   // Event Handlers
