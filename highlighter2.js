@@ -32,6 +32,7 @@ $(document).on('ready page:load', function() {
     this.text = highlightText;
     this.parentElementID = parentElementID;
     this.occurences = occurences;
+    this.occurenceIndex = occurences.indexOf(startOffset);
   }
 
   function createHighlight() {
@@ -41,6 +42,7 @@ $(document).on('ready page:load', function() {
       if (sel.rangeCount && (range.toString().length > 0)) {
         // Create a new highlight
         var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, range.toString(), range.startContainer.parentElement.id, getOccurences(range.startContainer.parentElement.innerHTML, range.toString()));
+        console.log(newHighlight);
         // Store highlight in array
         highlights.push(newHighlight);
         // Add a span to the range
@@ -99,8 +101,17 @@ function newHighlightSpan(id) {
 
       $('article').contents().filter(function() {
         if (this.id === highlights[i].parentElementID) {
-          finalMarkedText = $(this).html().replace(currentHighlightText, "<span id='highlight-" + i + "' class='highlight'>" + currentHighlightText + "</span>");
+// TODO: Modify this so it uses the startOffset highlighter value and starts the search there. 
+// OR: update the 
+
+// ORIG:
+          // finalMarkedText = $(this).html().replace(currentHighlightText, "<span id='highlight-" + i + "' class='highlight'>" + currentHighlightText + "</span>");
+          // $(this).html(finalMarkedText);
+
+
+          finalMarkedText = $(this).html().substring(0, highlights[i].startOffset - 7) + "<span class='highlight'>" + highlights[i].text + "</span>" + $(this).html().substring(highlights[i].startOffset - 7 + highlights[i].text.length, $(this).html().length);
           $(this).html(finalMarkedText);
+
         }
       });
 
