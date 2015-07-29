@@ -11,13 +11,9 @@ $(document).on('ready page:load', function() {
   // ----------------------------------------------------------------
 
   function numberElements(html) {
-    var i = 0;
-    $(html).contents().filter(function() {
-      if (this.nodeType === 1) {
-        this.id = i;
-        i++;
-      }
-    });
+    $('article.container *').each(function( index ) {
+      this.setAttribute('id', (index));
+    })
   }
 
   numberElements('article');
@@ -38,6 +34,8 @@ $(document).on('ready page:load', function() {
     this.occurenceIndex = this.occurences.indexOf(this.startOffset);
     this.focusOffset = focusOffset;
   }
+
+
 
   function createHighlight() {
     if (window.getSelection) {
@@ -109,7 +107,7 @@ function newHighlightSpan(id) {
 
       $('article').contents().filter(function() {
         if (this.id === highlights[i].parentElementID) {
-
+            
           searchOccurences = getIndicesOf(currentHighlightText, (highlights[i].startContainer.textContent + highlights[i].text));  // This is checking the paragraph for occurences, but the searh index is based on the node.
 
 
