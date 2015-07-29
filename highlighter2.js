@@ -122,7 +122,7 @@ function newHighlightSpan(id) {
           console.log(replacementIndexEnd);
           finalMarkedText = finalMarkedText.concat(paragraphText.substr(0,replacementIndex))
           finalMarkedText = finalMarkedText.concat("<span class='highlight'>");
-          finalMarkedText = finalMarkedText.concat(paragraphText.substr(replacementIndex,replacementIndexEnd))
+          finalMarkedText = finalMarkedText.concat(highlights[i].text);
           finalMarkedText = finalMarkedText.concat("</span>");
           finalMarkedText = finalMarkedText.concat(paragraphText.substr(replacementIndexEnd,paragraphText.length-1))
 
@@ -152,6 +152,7 @@ function newHighlightSpan(id) {
           
 
           $(this).html(finalMarkedText);
+          paragraphText = finalMarkedText;
 
         }
       });
