@@ -105,30 +105,50 @@ function newHighlightSpan(id) {
       var finalMarkedText = "";
 
 
+
       $('article').contents().filter(function() {
         if (this.id === highlights[i].parentElementID) {
-            
-          searchOccurences = getIndicesOf(currentHighlightText, (highlights[i].startContainer.textContent + highlights[i].text));  // This is checking the paragraph for occurences, but the searh index is based on the node.
+          console.log("paragraphText:")
+          console.log($(this).html())
+          paragraphText = $(this).html()  
+          // searchOccurences = getIndicesOf(currentHighlightText, (highlights[i].startContainer.textContent + highlights[i].text));  // This is checking the paragraph for occurences, but the searh index is based on the node.
+          
+          paragraphOccurences = getOccurences(paragraphText, currentHighlightText)
+          replacementIndex = paragraphOccurences[highlights[i].occurenceIndex]
+          replacementIndexEnd = replacementIndex + highlights[i].text.length;
+          console.log("replacement index:");
+          console.log(replacementIndex);
+          console.log("replacement index end:");
+          console.log(replacementIndexEnd);
+          finalMarkedText = finalMarkedText.concat(paragraphText.substr(0,replacementIndex))
+          finalMarkedText = finalMarkedText.concat("<span class='highlight'>");
+          finalMarkedText = finalMarkedText.concat(paragraphText.substr(replacementIndex,replacementIndexEnd))
+          finalMarkedText = finalMarkedText.concat("</span>");
+          finalMarkedText = finalMarkedText.concat(paragraphText.substr(replacementIndexEnd,paragraphText.length-1))
 
 
-          occurenceIndex = searchOccurences[highlights[i].occurenceIndex]; 
-          var finalMarkedText = ""
-          var childLength =  highlights[i].startContainer.parentNode.childNodes.length;
-          console.log("******************************************")
-          console.log("About to loop for following highlight for highlight # " + i + ":");
-          console.log(highlights[i].text);
-          console.log(highlights[i]);
-          for (x = 0; x < childLength; x++) {
-            console.log("About to concat the following node, node #" + x);
-            currentNode = highlights[i].startContainer.parentNode.childNodes[x]
-            console.log(currentNode.outerHTML || currentNode.textContent)
 
-            finalMarkedText = finalMarkedText.concat(currentNode.outerHTML || currentNode.textContent);
-            // If this doesn't work once we connect it to the database, we may need to do the following:
-            // Check if node is the current node in question, and if so modify the HTML string by using substr and the occurence index.
-          }
-          console.log("FInished product for final marked text:")
-          console.log(finalMarkedText);
+          
+
+
+          // occurenceIndex = searchOccurences[highlights[i].occurenceIndex]; 
+          // var finalMarkedText = ""
+          // var childLength =  highlights[i].startContainer.parentNode.childNodes.length;
+          // console.log("******************************************")
+          // console.log("About to loop for following highlight for highlight # " + i + ":");
+          // console.log(highlights[i].text);
+          // console.log(highlights[i]);
+          // for (x = 0; x < childLength; x++) {
+          //   console.log("About to concat the following node, node #" + x);
+          //   currentNode = highlights[i].startContainer.parentNode.childNodes[x]
+          //   console.log(currentNode.outerHTML || currentNode.textContent)
+
+          //   finalMarkedText = finalMarkedText.concat(currentNode.outerHTML || currentNode.textContent);
+          //   // If this doesn't work once we connect it to the database, we may need to do the following:
+          //   // Check if node is the current node in question, and if so modify the HTML string by using substr and the occurence index.
+          // }
+          // console.log("FInished product for final marked text:")
+          // console.log(finalMarkedText);
           
 
           $(this).html(finalMarkedText);
