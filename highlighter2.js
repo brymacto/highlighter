@@ -22,15 +22,13 @@ $(document).on('ready page:load', function() {
   // Highlight Logic
   // ----------------------------------------------------------------
 
-  function Highlight(startOffset, endContainer, endOffset, commonAncestorContainer, highlightText, parentElementID, occurences, focusOffset) {
+  function Highlight(startOffset, endOffset, highlightText, parentElementID, occurences) {
     this.id = highlights.length;
-    this.endContainer = endContainer;
     this.endOffset = endOffset;
     this.text = highlightText;
     this.parentElementID = parentElementID;
     this.occurences = occurences;
     this.occurenceIndex = this.occurences.indexOf(startOffset);
-    this.focusOffset = focusOffset;
   }
 
   function createHighlight() {
@@ -43,7 +41,7 @@ $(document).on('ready page:load', function() {
         var newHighlightText = range.toString().replace(/\s{2,}/g, ' ');
         newHighlightText = newHighlightText.replace(/\t/g, ' ');
         newHighlightText = newHighlightText.trim().replace(/(\r\n|\n|\r)/g,"");
-        var newHighlight = new Highlight(range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, newHighlightText, range.startContainer.parentElement.id, getOccurences(range.startContainer.textContent, range.toString()), sel.focusOffset);
+        var newHighlight = new Highlight(range.startOffset, range.endOffset, newHighlightText, range.startContainer.parentElement.id, getOccurences(range.startContainer.textContent, range.toString()));
         // Store highlight in array
         highlights.push(newHighlight);
         // Add a span to the range
@@ -93,17 +91,22 @@ function newHighlightSpan(id) {
     // Loop through the array of highlights 
 
 
-    // Grab paragraph text from HTML once only per paragraph.
+    // Set variable to grab paragraph text from HTML once only per paragraph.
     var paragraphTextRanOnce = null;
+
+    // Loop through each highlight
     for (var i=0; i<(highlights.length); i++) {
       var h = highlights[i]
       var currentHighlightText = h.text;
       var finalMarkedText = "";
 
-      $('article.container p').each(function() {
+      // iterate through each paragraph to find the paragraph matching the highlight
+      $('article.container *').each(function() {
         if (this.id == h.parentElementID) {
           $this = $(this)
-          if (paragraphTextRanOnce == null) {
+          
+          // Get paragraph HTML - run only once per paragraph.
+          if (!paragraphTextRanOnce) {
             paragraphText = $this.html() 
             paragraphTextRanOnce = true;
           }
