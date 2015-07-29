@@ -44,7 +44,9 @@ $(document).on('ready page:load', function() {
       
       if (sel.rangeCount && (range.toString().length > 0)) {
         // Create a new highlight
-        var newHighlightText = range.toString().replace(/\s\s+/g, ' ');
+        // var currentHighlightText = currentHighlightText.toString().trim().replace(/(\r\n|\n|\r)/g,"");
+        var newHighlightText = range.toString().trim().replace(/(\r\n|\n|\r)/g,"");
+        // var newHighlightText = range.toString().replace(/\s\s+/g, ' ');
         var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, newHighlightText, range.startContainer.parentElement.id, getOccurences(range.startContainer.textContent, range.toString()), sel.focusOffset);
         console.log(newHighlight)
         // Store highlight in array
