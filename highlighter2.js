@@ -22,16 +22,14 @@ $(document).on('ready page:load', function() {
   // Highlight Logic
   // ----------------------------------------------------------------
 
-  function Highlight(startContainer, startOffset, endContainer, endOffset, commonAncestorContainer, highlightText, parentElementID, occurences, focusOffset) {
+  function Highlight(startOffset, endContainer, endOffset, commonAncestorContainer, highlightText, parentElementID, occurences, focusOffset) {
     this.id = highlights.length;
-    this.startContainer = startContainer;
-    this.startOffset = startOffset;
     this.endContainer = endContainer;
     this.endOffset = endOffset;
     this.text = highlightText;
     this.parentElementID = parentElementID;
     this.occurences = occurences;
-    this.occurenceIndex = this.occurences.indexOf(this.startOffset);
+    this.occurenceIndex = this.occurences.indexOf(startOffset);
     this.focusOffset = focusOffset;
   }
 
@@ -45,7 +43,7 @@ $(document).on('ready page:load', function() {
         var newHighlightText = range.toString().replace(/\s{2,}/g, ' ');
         newHighlightText = newHighlightText.replace(/\t/g, ' ');
         newHighlightText = newHighlightText.trim().replace(/(\r\n|\n|\r)/g,"");
-        var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, newHighlightText, range.startContainer.parentElement.id, getOccurences(range.startContainer.textContent, range.toString()), sel.focusOffset);
+        var newHighlight = new Highlight(range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, newHighlightText, range.startContainer.parentElement.id, getOccurences(range.startContainer.textContent, range.toString()), sel.focusOffset);
         // Store highlight in array
         highlights.push(newHighlight);
         // Add a span to the range
@@ -93,13 +91,17 @@ function newHighlightSpan(id) {
     // Make sure article is pristine
     deleteHighlights();
     // Loop through the array of highlights 
+
+
+    // Grab paragraph text from HTML once only per paragraph.
     var paragraphTextRanOnce = null;
     for (var i=0; i<(highlights.length); i++) {
-      var currentHighlightText = highlights[i].text;
+      var h = highlights[i]
+      var currentHighlightText = h.text;
       var finalMarkedText = "";
 
       $('article.container p').each(function() {
-        if (this.id == highlights[i].parentElementID) {
+        if (this.id == h.parentElementID) {
           $this = $(this)
           if (paragraphTextRanOnce == null) {
             paragraphText = $this.html() 
@@ -107,11 +109,11 @@ function newHighlightSpan(id) {
           }
 
           paragraphOccurences = getOccurences(paragraphText, currentHighlightText)
-          replacementIndex = paragraphOccurences[highlights[i].occurenceIndex]
-          replacementIndexEnd = replacementIndex + highlights[i].text.length;
+          replacementIndex = paragraphOccurences[h.occurenceIndex]
+          replacementIndexEnd = replacementIndex + h.text.length;
           finalMarkedText = finalMarkedText.concat(paragraphText.substr(0,replacementIndex))
           finalMarkedText = finalMarkedText.concat("<span class='highlight'>");
-          finalMarkedText = finalMarkedText.concat(highlights[i].text);
+          finalMarkedText = finalMarkedText.concat(h.text);
           finalMarkedText = finalMarkedText.concat("</span>");
           finalMarkedText = finalMarkedText.concat(paragraphText.substr(replacementIndexEnd))
 
