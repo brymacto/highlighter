@@ -91,8 +91,6 @@ function newHighlightSpan(id) {
     // Loop through the array of highlights 
 
 
-    // Set variable to grab paragraph text from HTML once only per paragraph.
-    var paragraphTextRanOnce = null;
 
     // Loop through each highlight
     for (var i=0; i<(highlights.length); i++) {
@@ -104,28 +102,21 @@ function newHighlightSpan(id) {
       $('article.container *').each(function() {
         if (this.id == h.parentElementID) {
           $this = $(this)
-          
-          // Get paragraph HTML - run only once per paragraph.
-          if (!paragraphTextRanOnce) {
-            paragraphText = $this.html() 
-            paragraphTextRanOnce = true;
-          }
-
-          paragraphOccurences = getOccurences(paragraphText, currentHighlightText)
-          replacementIndex = paragraphOccurences[h.occurenceIndex]
+          paragraphText = $this.html() ;
+          paragraphOccurences = getOccurences(paragraphText, currentHighlightText);
+          replacementIndex = paragraphOccurences[h.occurenceIndex];
           replacementIndexEnd = replacementIndex + h.text.length;
-          finalMarkedText = finalMarkedText.concat(paragraphText.substr(0,replacementIndex))
+          finalMarkedText = finalMarkedText.concat(paragraphText.substr(0,replacementIndex));
           finalMarkedText = finalMarkedText.concat("<span class='highlight'>");
           finalMarkedText = finalMarkedText.concat(h.text);
           finalMarkedText = finalMarkedText.concat("</span>");
-          finalMarkedText = finalMarkedText.concat(paragraphText.substr(replacementIndexEnd))
+          finalMarkedText = finalMarkedText.concat(paragraphText.substr(replacementIndexEnd));
 
           paragraphText = finalMarkedText;
 
           $this.empty();
           $this.append(finalMarkedText);
         }
-        paragraphTextRanOnce = null;
       });
 
     }
