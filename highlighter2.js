@@ -44,7 +44,8 @@ $(document).on('ready page:load', function() {
       
       if (sel.rangeCount && (range.toString().length > 0)) {
         // Create a new highlight
-        var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, range.toString(), range.startContainer.parentElement.id, getOccurences(range.startContainer.textContent, range.toString()), sel.focusOffset);
+        var newHighlightText = range.toString().replace(/\s\s+/g, ' ');
+        var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, newHighlightText, range.startContainer.parentElement.id, getOccurences(range.startContainer.textContent, range.toString()), sel.focusOffset);
         console.log(newHighlight)
         // Store highlight in array
         highlights.push(newHighlight);
@@ -93,7 +94,9 @@ function newHighlightSpan(id) {
     // Make sure article is pristine
     deleteHighlights();
     // Loop through the array of highlights backwards
-    for (var i=(highlights.length-1); i>=(highlights.length-1); i--) {
+    var paragraphTextRanOnce = null;
+    for (var i=0; i<(highlights.length); i++) {
+    // for (var i=(highlights.length-1); i>=(highlights.length-1); i--) {
       //Using this for statement instead of the below solves the immediate problem of multiple highlights not loading if highlights ar erebuilt after the first highlight was made.  However, it may not work with the database.
     // for (var i=(highlights.length-1); i>=0; i--) {
       // Get the full text of the current highlight
@@ -106,25 +109,44 @@ function newHighlightSpan(id) {
 
 
 
+      
       $('article').contents().filter(function() {
         if (this.id === highlights[i].parentElementID) {
+          $this = $(this)
+          if (paragraphTextRanOnce == null) {
+            paragraphText = $this.html() 
+            paragraphTextRanOnce = true;
+          }
           console.log("paragraphText:")
-          console.log($(this).html())
-          paragraphText = $(this).html()  
+          console.log(paragraphText)
+          
           // searchOccurences = getIndicesOf(currentHighlightText, (highlights[i].startContainer.textContent + highlights[i].text));  // This is checking the paragraph for occurences, but the searh index is based on the node.
           
           paragraphOccurences = getOccurences(paragraphText, currentHighlightText)
           replacementIndex = paragraphOccurences[highlights[i].occurenceIndex]
-          replacementIndexEnd = replacementIndex + highlights[i].text.length;
+          console.log("Highlight text length:");
+          console.log(highlights[i].text.length)
+          console.log("Line breaks:")
+          console.log((highlights[i].text.match(/\n/g)||[]).length)
+          replacementIndexEnd = replacementIndex + highlights[i].text.length; // + ((highlights[i].text.match(/\n/g)||[]).length);
           console.log("replacement index:");
           console.log(replacementIndex);
+          // console.log(paragraphText.substr(replacementIndex,replacementIndex));
           console.log("replacement index end:");
           console.log(replacementIndexEnd);
+          // console.log(paragraphText.substr(replacementIndexEnd,replacementIndexEnd));
+          console.log("First part of string:");
+          console.log(paragraphText.substr(0,replacementIndex));
           finalMarkedText = finalMarkedText.concat(paragraphText.substr(0,replacementIndex))
           finalMarkedText = finalMarkedText.concat("<span class='highlight'>");
+          // finalMarkedText = finalMarkedText.concat(paragraphText.substr(replacementIndex,replacementIndexEnd))
+          console.log("Text:")
+          console.dir(highlights[i].text)
           finalMarkedText = finalMarkedText.concat(highlights[i].text);
           finalMarkedText = finalMarkedText.concat("</span>");
-          finalMarkedText = finalMarkedText.concat(paragraphText.substr(replacementIndexEnd,paragraphText.length-1))
+          console.log("Last part of string");
+          console.log(paragraphText.substr(replacementIndexEnd));
+          finalMarkedText = finalMarkedText.concat(paragraphText.substr(replacementIndexEnd))
 
 
 
@@ -149,11 +171,13 @@ function newHighlightSpan(id) {
           // }
           // console.log("FInished product for final marked text:")
           // console.log(finalMarkedText);
+          paragraphText = finalMarkedText;
           
 
-          $(this).html(finalMarkedText);
-          paragraphText = finalMarkedText;
+          // $(this).html(finalMarkedText);
 
+          $this.empty();
+          $this.append(finalMarkedText);
         }
       });
 
