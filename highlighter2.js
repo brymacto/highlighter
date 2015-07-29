@@ -35,17 +35,17 @@ $(document).on('ready page:load', function() {
     this.focusOffset = focusOffset;
   }
 
-
-
   function createHighlight() {
     if (window.getSelection) {
       var sel = window.getSelection();
       var range = sel.getRangeAt(0);
-      
+
       if (sel.rangeCount && (range.toString().length > 0)) {
         // Create a new highlight
         // var currentHighlightText = currentHighlightText.toString().trim().replace(/(\r\n|\n|\r)/g,"");
-        var newHighlightText = range.toString().trim().replace(/(\r\n|\n|\r)/g,"");
+        var newHighlightText = range.toString().replace(/\s{2,}/g, ' ');
+        newHighlightText = newHighlightText.replace(/\t/g, ' ');
+        newHighlightText = newHighlightText.trim().replace(/(\r\n|\n|\r)/g,"");
         // var newHighlightText = range.toString().replace(/\s\s+/g, ' ');
         var newHighlight = new Highlight(range.startContainer, range.startOffset, range.endContainer, range.endOffset, range.commonAncestorContainer, newHighlightText, range.startContainer.parentElement.id, getOccurences(range.startContainer.textContent, range.toString()), sel.focusOffset);
         console.log(newHighlight)
@@ -61,7 +61,7 @@ $(document).on('ready page:load', function() {
     var occurences = [];
     var matchIndex = 0;
     var allOccurencesAdded = false;
-    
+
     while (allOccurencesAdded == false) {
       newOccurence = elementText.indexOf(match, matchIndex);
       if (newOccurence >= 0) {
@@ -103,17 +103,13 @@ function newHighlightSpan(id) {
     // for (var i=(highlights.length-1); i>=0; i--) {
       // Get the full text of the current highlight
       var currentHighlightText = highlights[i].text;
-      currentHighlightText = currentHighlightText.replace(/\s{2,}/g, ' ');
-      currentHighlightText = currentHighlightText.replace(/\t/g, ' ');
-      currentHighlightText = currentHighlightText.toString().trim().replace(/(\r\n|\n|\r)/g,"");
-
       var finalMarkedText = "";
 
-
-
-      
-      $('article').contents().filter(function() {
-        if (this.id === highlights[i].parentElementID) {
+      $('article.container p').each(function() {
+      // $('article').contents().filter(function() {
+        console.log("***************** this.id:")
+        console.log(this.id)
+        if (this.id == highlights[i].parentElementID) {
           $this = $(this)
           if (paragraphTextRanOnce == null) {
             paragraphText = $this.html() 
@@ -121,9 +117,9 @@ function newHighlightSpan(id) {
           }
           console.log("paragraphText:")
           console.log(paragraphText)
-          
+
           // searchOccurences = getIndicesOf(currentHighlightText, (highlights[i].startContainer.textContent + highlights[i].text));  // This is checking the paragraph for occurences, but the searh index is based on the node.
-          
+
           paragraphOccurences = getOccurences(paragraphText, currentHighlightText)
           replacementIndex = paragraphOccurences[highlights[i].occurenceIndex]
           console.log("Highlight text length:");
@@ -150,11 +146,6 @@ function newHighlightSpan(id) {
           console.log(paragraphText.substr(replacementIndexEnd));
           finalMarkedText = finalMarkedText.concat(paragraphText.substr(replacementIndexEnd))
 
-
-
-          
-
-
           // occurenceIndex = searchOccurences[highlights[i].occurenceIndex]; 
           // var finalMarkedText = ""
           // var childLength =  highlights[i].startContainer.parentNode.childNodes.length;
@@ -174,13 +165,13 @@ function newHighlightSpan(id) {
           // console.log("FInished product for final marked text:")
           // console.log(finalMarkedText);
           paragraphText = finalMarkedText;
-          
 
           // $(this).html(finalMarkedText);
 
           $this.empty();
           $this.append(finalMarkedText);
         }
+        paragraphTextRanOnce = null;
       });
 
     }
@@ -197,7 +188,6 @@ function getIndicesOf(searchStr, str) {
     return indices;
 }
 
-
   // ----------------------------------------------------------------
   // Event Handlers
   // ----------------------------------------------------------------
@@ -211,13 +201,11 @@ function getIndicesOf(searchStr, str) {
 
   });
 
-
   $('#addHighlight').on('click', function(e) {
     e.preventDefault();
     createHighlight();
     $('#highlightCreatePopover').hide();
   });
-
 
   $('#deleteHighlights').on('click', function(e) {
     e.preventDefault();
