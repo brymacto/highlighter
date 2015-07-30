@@ -54,7 +54,6 @@ $(document).on('ready page:load', function() {
     var occurences = [];
     var matchIndex = 0;
     var allOccurencesAdded = false;
-
     while (allOccurencesAdded == false) {
       newOccurence = elementText.indexOf(match, matchIndex);
       if (newOccurence >= 0) {
@@ -63,12 +62,9 @@ $(document).on('ready page:load', function() {
       } else {
         allOccurencesAdded = true;
       }
-
     }
-
-return occurences;
-
-}
+  return occurences;
+  }
 
 function newHighlightSpan(id) {
     // Create a new span with highlight-id and class highlight
@@ -88,16 +84,11 @@ function newHighlightSpan(id) {
   function buildHighlights() {
     // Make sure article is pristine
     deleteHighlights();
-    // Loop through the array of highlights 
-
-
-
     // Loop through each highlight
     for (var i=0; i<(highlights.length); i++) {
       var h = highlights[i]
       var currentHighlightText = h.text;
       var finalMarkedText = "";
-
       // iterate through each paragraph to find the paragraph matching the highlight
       $('article.container *').each(function() {
         if (this.id == h.parentElementID) {
@@ -111,27 +102,14 @@ function newHighlightSpan(id) {
           finalMarkedText = finalMarkedText.concat(h.text);
           finalMarkedText = finalMarkedText.concat("</span>");
           finalMarkedText = finalMarkedText.concat(paragraphText.substr(replacementIndexEnd));
-
           paragraphText = finalMarkedText;
-
           $this.empty();
           $this.append(finalMarkedText);
         }
       });
-
     }
   }
 
-function getIndicesOf(searchStr, str) {
-    var startIndex = 0, searchStrLen = searchStr.length;
-    var index, indices = [];
-
-    while ((index = str.indexOf(searchStr, startIndex)) > -1) {
-        indices.push(index);
-        startIndex = index + searchStrLen;
-    }
-    return indices;
-}
 
   // ----------------------------------------------------------------
   // Event Handlers
